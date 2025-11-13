@@ -11,7 +11,6 @@ import threading
 import time
 
 
-from los.configs import Config as MConfig
 from los.command import Fleet, command
 from los.handler import Output
 from los.handler import Event as IEvent
@@ -575,19 +574,22 @@ def cb_quit(evt):
 
 
 def cfg(event):
-    config = Config()
-    fnm = last(config)
+    bot = Fleet.get(event.orig)
+    if not bot:
+        event.reply("can't find bot")
+        return
+    fnm = last(bot.cfg)
     if not event.sets:
         event.reply(
             fmt(
-                config,
-                keys(config),
+                bot.cfg,
+                keys(bot.cfg),
                 skip="control,name,password,realname,sleep,username".split(","),
             )
         )
     else:
-        edit(config, event.sets)
-        write(config, fnm or getpath(config))
+        edit(bot.cfg, event.sets)
+        write(bot.cfg, fnm or getpath(bot.cfg))
         event.reply("ok")
 
 

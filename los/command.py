@@ -142,6 +142,7 @@ def parse(obj, text) -> None:
 def __dir__():
     return (
         'Comamnds',
+        'Fleet',
         'command',
         'parse',
         'scan'

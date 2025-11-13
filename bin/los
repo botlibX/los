@@ -13,7 +13,6 @@ sys.path.insert(0, os.getcwd())
 
 
 from los.command import Commands, command, parse, scan
-from los.configs import Config
 from los.handler import Client, Event
 from los.loggers import level
 from los.objects import Default, update
@@ -35,6 +34,7 @@ class Config(Default):
 
 Mods.ignore = ["mbx", "udp", "web", "rst"]
 Mods.add("mods", "mods")
+
 
 Workdir.wdr = os.path.expanduser(f"~/.{Config.name}")
 
@@ -115,7 +115,7 @@ def console():
     if "a" in Config.opts:
         mods = modules()
     else:
-        mods = spl(Config.sets.get("init"))
+        mods = spl(Config.sets.get("init", ""))
     Commands.add(cmd, ver)
     csl = Console()
     for _mod, thr in scanner(mods):
@@ -185,10 +185,6 @@ def ver(event):
 
 
 threading.excepthook = threadhook
-
-
-
-"main"
 
 
 def main():

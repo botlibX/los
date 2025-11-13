@@ -125,40 +125,10 @@ class Output(Client):
         super().stop()
 
 
-class Pool:
-
-    clients: list[Client] = []
-    lock = threading.RLock()
-    nrcpu = 1
-    nrlast = 0
-
-    @staticmethod
-    def add(client):
-        Pool.clients.append(client)
-
-    @staticmethod
-    def init(cls, nr, verbose=False):
-        Pool.nrcpu = nr
-        for _x in range(Pool.nrcpu):
-            clt = cls()
-            clt.start()
-            Pool.add(clt)
-
-    @staticmethod
-    def put(event):
-        with Pool.lock:
-            if Pool.nrlast >= Pool.nrcpu-1:
-                Pool.nrlast = 0
-            clt = Pool.clients[Pool.nrlast]
-            clt.put(event)
-            Pool.nrlast += 1
-
-
 def __dir__():
     return (
         'Client',
         'Event',
         'Handler',
-        'Output',
-        'Pool'
+        'Output'
    )
